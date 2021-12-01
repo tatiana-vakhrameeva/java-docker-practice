@@ -1,4 +1,3 @@
-FROM maven:alpine
-RUN apk add --no-cache bash
+FROM maven:3.8.4-jdk-11
 WORKDIR /app
 EXPOSE 8888
