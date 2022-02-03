@@ -1,0 +1,35 @@
+version: '3'
+networks:
+  docker-practice-net:
+services:
+  app:
+    build:
+      context: ../../
+      dockerfile: ops-tools/docker/images/app/Dockerfile
+    ports:
+      - 8888:8080
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - docker-practice-net
+  postgres:
+    image: postgres:14-alpine
+    volumes:
+      - /home/jeki/data/postgres:/var/lib/postgresql
+      - /home/jeki/data/dump:/db-dump
+    ports: 
+      - 5432:5432
+    environment:
+      POSTGRES_DB: school
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: school
+    networks: 
+      - docker-practice-net
+  redis:
+    image: redis:6-alpine
+    ports: 
+      - 6379:6379
+    networks: 
+      - docker-practice-net
+      
