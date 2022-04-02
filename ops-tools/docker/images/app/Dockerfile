@@ -1,0 +1,3 @@
+FROM maven:3.5.2-jdk-8-alpine
+WORKDIR /app
+EXPOSE 8888
