@@ -14,9 +14,6 @@ services:
       - "8888:8080"
     networks:
       - docker-practice-net
-#    links:
-#      - 'database:localhost'
-#      - 'redis:localhost'
     depends_on:
       - redis
       - database
