@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:13.1-alpine
+    environment:
+      POSTGRES_DB: "school"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "school"
+    restart: always
+
+    networks:
+      - docker-practice-net
+    volumes:
+      - ../../data/dump:/db-dump
+    ports:
+      - "5432:5432"
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+
+networks:
+  docker-practice-net:
