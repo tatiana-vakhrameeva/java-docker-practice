@@ -1,4 +1,3 @@
-#FROM maven:3-jdk-11
-#WORKDIR /app
-#RUN apk
-#EXPOSE 8888
+FROM maven:3.8.5-jdk-11
+WORKDIR /opt/app
+EXPOSE 8888
