@@ -1,3 +1,3 @@
-FROM maven:latest
+FROM maven:3.8.5-jdk-11
 WORKDIR /app
 EXPOSE 8888
