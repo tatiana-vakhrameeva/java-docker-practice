@@ -1,0 +1,37 @@
+version: "3"
+networks:
+  default:
+    name: docker-practice-net
+
+services:
+
+  backend:
+    image: maven:3.8.5-jdk-8-slim
+    working_dir: /app
+    command: bash -c "mvn package; java -jar target/docker-practice-java-0.0.1-SNAPSHOT.jar"
+    volumes:
+      - ../../:/app/
+    depends_on:
+      - redis
+      - db
+    ports:
+     - '8080:8080'
+
+  db:
+    image: postgres:14.2
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=school
+      - POSTGRES_DB=school
+    ports:
+      - '5432:5432'
+    volumes:
+      - ${ROOT_DIR}/data/postgres
+      - ${ROOT_DIR}/data/dump:/db_dumb
+
+  redis:
+    image: redis:7.0.0
+    restart: always
+    ports:
+      - '6379:6379'
