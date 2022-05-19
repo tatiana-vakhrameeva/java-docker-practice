@@ -4,10 +4,11 @@ networks:
     name: docker-practice-net
 
 services:
-
   backend:
-    image: maven:3.8.5-jdk-8-slim
-    working_dir: /app
+    build:
+      context: ../../
+      dockerfile: ./ops-tools/docker/images/app/Dockerfile
+
     command: bash -c "mvn package; java -jar target/docker-practice-java-0.0.1-SNAPSHOT.jar"
     volumes:
       - ../../:/app/
