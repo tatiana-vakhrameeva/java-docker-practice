@@ -1,0 +1,41 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:13.3
+    container_name: PostgreSQL
+    ports:
+      - "5432:8080"
+    volumes:
+      - ./data/posgres:/var/lib/postgresql/data/pgdata
+      - ./bd-dump:./data/dump
+
+    environment:
+        POSTGRES_PASSWORD: school
+        PGDATA: /var/lib/postgresql/data/pgdata
+    restart: always
+
+  redis:
+    image: redis:7.0.2
+    container_name: redis
+    ports:
+      - "6379:8080"
+    restart: always
+
+
+  app:
+     image: ./image/app
+     container_name: application
+     ports:
+       - "8888:8888"
+
+     environment:
+       POSTGRES_HOST: postgres
+       REDIS_HOST: redis
+
+     restart: always
+
+     links:
+       - postgres
+       - redis
+
+
