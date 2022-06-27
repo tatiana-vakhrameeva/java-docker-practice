@@ -23,7 +23,8 @@ services:
 
 
   app:
-     image: ./image/app
+      build:
+       dockerfile: ./image/app
      container_name: application
      ports:
        - "8888:8888"
