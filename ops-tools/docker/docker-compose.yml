@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   postgres:
     image: postgres:13.3
@@ -9,18 +9,16 @@ services:
       - ./data/posgres:/var/lib/postgresql/data/pgdata
       - ./bd-dump:./data/dump
     environment:
-        POSTGRES_PASSWORD: school
-        PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_PASSWORD: school
+      PGDATA: /var/lib/postgresql/data/pgdata
     restart: always
-
   redis:
     image: redis:7.0.2
     container_name: redis
     restart: always
-
   app:
      build:
-       context:.
+       context: .
        dockerfile: ./ops-tools/docker/image/app/Dockerfile
      container_name: application
      ports:
