@@ -1,0 +1,23 @@
+version: '3'
+services:
+  Postgres:
+    image: postgres
+
+    environment:
+      POSTGRES_DB: school
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: school
+      PGDATA: /data/postgres
+    volumes:
+      - /db-dump:/data/dump
+    ports:
+      - "8080:5432"
+    networks:
+      - docker-practice-net
+  Redis:
+    image: redis
+    ##ports:
+    ##  - "8080:6379"
+networks:
+  docker-practice-net:
+
