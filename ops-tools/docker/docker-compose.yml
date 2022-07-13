@@ -24,12 +24,14 @@ services:
       - /data/redis:/var/lib/redis/data
 
   app:
-    build: ./images/app
+    build:
+      context: .
+      dockerfile: ./images/app/Dockerfile
     ports:
       - "8888:8888"
     environment:
-      REDIS_PORT: 6379
-      POSTGRES_PORT: 5432
+      POSTGRES_HOST: 6379
+      REDIS_HOST: 5432
     restart: always
     links:
       - postgres

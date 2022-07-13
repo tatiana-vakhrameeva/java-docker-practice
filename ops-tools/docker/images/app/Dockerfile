@@ -1,7 +1,6 @@
 FROM openjdk:17
 COPY ../../../.. .
-WORKDIR .
 ENV PORT 8888
 EXPOSE $PORT
 
-ENTRYPOINT ["java", "DockerPracticeJavaApplication"]
+ENTRYPOINT ["java", "-jar", "docker-practice-java2_jar.jar"]
