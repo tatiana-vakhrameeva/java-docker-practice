@@ -1,7 +1,7 @@
 version: '3'
 services:
   postgres:
-    image: postgres
+    image: postgres:13.3
     restart: always
     environment:
       POSTGRES_DB: school
@@ -16,7 +16,7 @@ services:
     networks:
       - docker-practice-net
   redis:
-    image: redis
+    image: redis:7.0.2
     restart: always
     ports:
       - "6379:6379"
