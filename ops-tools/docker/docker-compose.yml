@@ -39,7 +39,7 @@ services:
           - postgres
   redis:
     container_name: redis
-    image: redis
+    image: redis:7.0.3-alpine
     environment:
       REDIS_PORT: 6379
     ports:
