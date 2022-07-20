@@ -9,8 +9,8 @@ services:
       POSTGRES_PASSWORD: school
       PGDATA: /data/postgres
     volumes:
-      - /data/postgres:/var/lib/postgresql/data
-      - /db-dump:/data/dump
+      - ../../data/postgres:/var/lib/postgresql/data
+      - ../../data/dump:/db-dump
     ports:
       - "5432:5432"
     networks:
@@ -21,21 +21,24 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - /data/redis:/var/lib/redis/data
+      - ../../data/redis:/var/lib/redis/data
+    networks:
+      - docker-practice-net
 
   app:
     build:
-      context: .
-      dockerfile: ./images/app/Dockerfile
+      context: ../../
+      dockerfile: ./ops-tools/docker/images/app/Dockerfile
+    command: sh -c "mvn package; java -jar target/docker-practice-java-0.0.1-SNAPSHOT.jar"
+    volumes:
+      - ../../:/app
     ports:
-      - "8888:8888"
-    environment:
-      POSTGRES_HOST: 6379
-      REDIS_HOST: 5432
-    restart: always
-    links:
+      - "8888:8080"
+    depends_on:
       - postgres
       - redis
+    networks:
+      - docker-practice-net
 
 networks:
   docker-practice-net:

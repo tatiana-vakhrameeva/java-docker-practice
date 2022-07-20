@@ -1,8 +1,5 @@
-FROM openjdk:17
+FROM maven:3.8.4-ibmjava-8-alpine
+RUN apk add --no-cache tini
 WORKDIR /app
-COPY ../../../.. .
-ENV PORT 8888
-EXPOSE $PORT
+EXPOSE 8888
 
-#ENTRYPOINT ["java", "-jar", "docker-practice-java2_jar.jar"]
-ENTRYPOINT ["java","src/main/java/ru/thumbtack/dockerpracticejava/DockerPracticeJavaApplication.java"]
