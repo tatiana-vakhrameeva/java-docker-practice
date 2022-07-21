@@ -2,35 +2,43 @@ version: "3"
 services:
   postgres:
     image: postgres:13.3
-    container_name: PostgreSQL
+    restart: always
     ports:
       - "5432:5432"
-    volumes:
-      - ./data/posgres:/var/lib/postgresql/data/pgdata
-      - ./bd-dump:./data/dump
     environment:
-      POSTGRES_PASSWORD: school
-      PGDATA: /var/lib/postgresql/data/pgdata
-    restart: always
+      - POSTGRES_PASSWORD=school
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=school
+    volumes:
+      - ../../data/postgres/:/var/lib/postgres/data
+      - ../../data/dump/:/db/dump
+    networks:
+      - docker-practice-net
+
   redis:
     image: redis:7.0.2
-    container_name: redis
     restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - docker-practice-net
+      
   app:
-     build:
-       context: .
-       dockerfile: ./ops-tools/docker/image/app/Dockerfile
-     container_name: application
-     ports:
-       - "8888:8888"
-     environment:
-       REDIS_PORT=6379
-       POSTGRES_PORT=5432
-       POSTGRES_HOST: postgres
-       REDIS_HOST: redis
-     restart: always
-     links:
-       - postgres
-       - redis
-
+      build:
+      context: ../../
+      dockerfile: ./ops-tools/docker/images/app/Dockerfile
+    command: sh -c "mvn package && java -jar target/docker-practice-java-0.0.1-SNAPSHOT.jar"
+    volumes:
+      - ../../:/app
+    ports:
+      - "8888:8080"
+    networks:
+      - docker-practice-net
+    depends_on:
+      - redis
+      - postgres
+      
+networks:
+  docker-practice-net:
+    driver: bridge 
 
