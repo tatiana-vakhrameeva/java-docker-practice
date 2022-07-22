@@ -1,0 +1,34 @@
+version: "3" 
+
+services:
+  java-backend:
+    image: eclipse-temurin:17-alpine
+    networks:     
+      - docker-practice-net
+    ports:
+      - "8080:8080"
+
+  pg:
+    image: postgres:latest-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: school 
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: school
+    networks:     
+      - docker-practice-net
+    ports: 
+      - "5432:5432"
+
+  redis:
+    # Хотелось сделать и latest, и alpine, посмотрим сработает ли
+    # (как и в случае pg)
+    image: redis:latest-alpine
+    networks:     
+      - docker-practice-net
+    ports: 
+      - "6379:6379"
+
+networks:
+  docker-practice-net:
+    driver: bridge
