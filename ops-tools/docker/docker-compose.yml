@@ -1,4 +1,4 @@
-version: "3" 
+version: "3.x"
 
 services:
   java-backend:
@@ -7,23 +7,28 @@ services:
       - docker-practice-net
     ports:
       - "8080:8080"
+    depends_on:
+      - pg
+      - redis
 
   pg:
-    image: postgres:latest-alpine
+    image: postgres:alpine
     restart: always
+    volumes:
+      - "./data/postgres:/var/lib/postgresql/data"
+      # Наверное, так должен быть сделан пункт g
+      - "./data/dump:/db-dump"
     environment:
-      POSTGRES_DB: school 
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: school
+      - POSTGRES_DB=school 
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=school
     networks:     
       - docker-practice-net
     ports: 
       - "5432:5432"
 
   redis:
-    # Хотелось сделать и latest, и alpine, посмотрим сработает ли
-    # (как и в случае pg)
-    image: redis:latest-alpine
+    image: redis:alpine
     networks:     
       - docker-practice-net
     ports: 
