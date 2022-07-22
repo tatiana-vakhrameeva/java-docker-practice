@@ -1,12 +1,22 @@
 version: "3.x"
 
+networks:
+  docker-practice-net:
+    driver: bridge
+
 services:
   java-backend:
-    image: eclipse-temurin:17-alpine
+    build: 
+      context: images/java-backend
+    restart: always
+    volumes:
+      - type: bind  
+        source: ../../target
+        target: /java-backend
     networks:     
       - docker-practice-net
     ports:
-      - "8080:8080"
+      - 8888:8888
     depends_on:
       - pg
       - redis
@@ -15,25 +25,24 @@ services:
     image: postgres:alpine
     restart: always
     volumes:
-      - "./data/postgres:/var/lib/postgresql/data"
-      # Наверное, так должен быть сделан пункт g
-      - "./data/dump:/db-dump"
+      # Надо подняться из директорий ops-tools/docker в 
+      # корневую директорию проекта (кажется, что это далеко
+      # не идеальный вариант (или нормально?))
+      - "../../data/postgres:/var/lib/postgresql/data"
+      - "../../data/dump:/db-dump"
     environment:
-      - POSTGRES_DB=school 
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=school
+      POSTGRES_DB: school 
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: school
     networks:     
       - docker-practice-net
     ports: 
-      - "5432:5432"
+      - 5432:5432
 
   redis:
     image: redis:alpine
+    restart: always
     networks:     
       - docker-practice-net
     ports: 
-      - "6379:6379"
-
-networks:
-  docker-practice-net:
-    driver: bridge
+      - 6379:6379
