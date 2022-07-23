@@ -1,2 +1,1 @@
-FROM eclipse-temurin:17-alpine
-WORKDIR /java-backend
+FROM eclipse-temurin:17-jre-alpine
