@@ -1,5 +1,5 @@
 FROM openjdk:17
-COPY ../../../.. .
+WORKDIR /app
 ENV PORT 8888
 EXPOSE $PORT
 
