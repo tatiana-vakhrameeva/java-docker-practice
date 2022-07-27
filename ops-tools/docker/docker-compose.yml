@@ -6,16 +6,10 @@ networks:
 
 services:
   java-backend:
+    container_name: java-backend
     build: 
       context: ../..
-      dockerfile: ops-tools/docker/images/app/Dockerfile
-    container_name: java-backend
-    restart: always
-    volumes:
-      - type: bind  
-        source: ../../target
-        target: /java-backend
-    working_dir: /java-backend
+      dockerfile: ./ops-tools/docker/images/java-backend/Dockerfile
     networks:     
       - docker-practice-net
     ports:
@@ -23,10 +17,9 @@ services:
     depends_on:
       - pg
       - redis
-    entrypoint: ["java", "-jar", "docker-practice-java-0.0.1-SNAPSHOT.jar"]
 
   pg:
-    image: postgres:alpine
+    image: postgres:14-alpine
     container_name: pg
     restart: always
     volumes:
@@ -41,7 +34,7 @@ services:
       - 5432:5432
 
   redis:
-    image: redis:alpine
+    image: redis:7-alpine
     container_name: redis
     restart: always
     networks:     
