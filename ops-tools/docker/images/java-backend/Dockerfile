@@ -3,5 +3,5 @@ WORKDIR /java-backend
 EXPOSE 8080
 COPY src/ ./
 COPY pom.xml ./
-CMD ["mvn", "package", "-DskipTests"]
+CMD ["mvn", "package"]
 ENTRYPOINT ["java", "-jar", "target/docker-practice-java-0.0.1-SNAPSHOT.jar"]
