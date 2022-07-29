@@ -9,7 +9,9 @@ services:
     container_name: java-backend
     build: 
       context: ../..
-      dockerfile: ./ops-tools/docker/images/java-backend/Dockerfile
+      dockerfile: ops-tools/docker/images/java-backend/Dockerfile
+    volumes:
+      - ../..:/java-backend
     networks:     
       - docker-practice-net
     ports:
@@ -26,6 +28,7 @@ services:
       - ../../data/postgres:/var/lib/postgresql/data
       - ../../data/dump:/db-dump
     environment:
+      POSTGRES_DB: school
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: school
     networks:     
