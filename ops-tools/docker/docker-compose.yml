@@ -1,0 +1,44 @@
+version: "3"
+
+networks:
+  docker-practice-net:
+    driver: bridge
+
+services:
+  java-backend:
+    container_name: java-backend
+    build: 
+      context: ../..
+      dockerfile: ops-tools/docker/images/java-backend/Dockerfile
+    networks:     
+      - docker-practice-net
+    ports:
+      - 8888:8080
+    depends_on:
+      - pg
+      - redis
+
+  pg:
+    image: postgres:14-alpine
+    container_name: pg
+    restart: always
+    volumes:
+      - ../../data/postgres:/var/lib/postgresql/data
+      - ../../data/dump:/db-dump
+    environment:
+      POSTGRES_DB: school
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: school
+    networks:     
+      - docker-practice-net
+    ports: 
+      - 5432:5432
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: always
+    networks:     
+      - docker-practice-net
+    ports: 
+      - 6379:6379
