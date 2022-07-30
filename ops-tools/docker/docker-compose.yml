@@ -10,8 +10,6 @@ services:
     build: 
       context: ../..
       dockerfile: ops-tools/docker/images/java-backend/Dockerfile
-    volumes:
-      - ../..:/java-backend
     networks:     
       - docker-practice-net
     ports:
