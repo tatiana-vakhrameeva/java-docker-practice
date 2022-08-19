@@ -1,0 +1,46 @@
+version: '3'
+
+networks:
+  docker-practice-net:
+    driver: bridge
+
+services:
+
+  database:
+    image: postgres:14.4-alpine
+    container_name: database
+    restart: always
+    volumes:
+      - ../../data/postgres:/var/lib/postgres/data
+      - ../../data/dump:/db-dump
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=school
+      - POSTGRES_DB=school
+    networks:
+      - docker-practice-net
+
+  redis:
+    image: redis:7.0.4-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - docker-practice-net
+
+
+  app:
+    container_name: app
+    build:
+      context: ../..
+      dockerfile: ./ops-tools/docker/images/app/Dockerfile
+    networks:
+      - docker-practice-net
+    ports:
+      - "8888:8080"
+    depends_on:
+      - redis
+      - database
