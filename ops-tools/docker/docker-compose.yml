@@ -16,7 +16,7 @@ services:
       - docker-practice-net
 
   postgresql:
-    image: postgres:15.0
+    image: postgres:15.0-alpine
     volumes:
       - ../../data/postgres:/var/lib/postgresql/data
       - ../../data/dump:/db-dump
@@ -30,7 +30,7 @@ services:
       - '5432:5432'
 
   redis:
-    image: redis:7.0.5
+    image: redis:7.0.5-alpine
     networks:
       - docker-practice-net
     ports:
