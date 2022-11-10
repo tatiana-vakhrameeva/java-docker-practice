@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  app:
+    build:
+      dockerfile: ./images/app/Dockerfile
+    ports:
+      - '8888:8080'
+    depends_on:
+      - redis
+      - postgres
+    volumes:
+      - ../../:/app
+    stdin_open: true
+    tty: true
+    networks:
+      docker-practice-net:
+
+  redis:
+    image: redis:7.0.5-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - cache:/data
+    networks:
+      docker-practice-net:
+
+  postgres:
+    image: postgres:15.0-alpine
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: school
+      POSTGRES_DB: school
+      PGDATA: /data/postgres
+    volumes:
+      - ../../data/postgres:/data/postgres
+      - ../../data/dump:/db-dump
+    networks:
+      docker-practice-net:
+
+volumes:
+  cache:
+    driver: local
+
+networks:
+  docker-practice-net:
