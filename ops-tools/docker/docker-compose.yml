@@ -1,0 +1,45 @@
+version: '3'
+
+networks:
+    docker-practice-net:
+#        external: true
+
+services:
+
+    Postgres:
+        image: postgres:alpine3.17
+        restart: always
+        volumes:
+            - /datastore/Postgres:/data/postgres
+            - /db-dump:/data/dump
+        environment:
+            - POSTGRES_DB=school
+            - POSTGRES_PASSWORD=school
+            - POSTGRES_USER=postgres
+        networks:
+            - docker-practice-net
+        ports:
+            - "5432:5432"
+        expose:
+            -   5432
+
+    Redis:
+        image: redis:alpine3.17
+        restart: always
+        networks:
+            - docker-practice-net
+        ports:
+            - "6379:6379"
+
+    app:
+        image: appjava:1.4
+        ports:
+            - "8888:8888"
+            - "8080:8080"
+        networks:
+            - docker-practice-net
+        depends_on:
+            -   Postgres
+            -   Redis
+
+
