@@ -31,10 +31,11 @@ services:
             - "6379:6379"
 
     app:
-        image: appjava:1.4
+        build:
+            dockerfile: ./images/app/Dockerfile
         volumes:
             -   ./../../:/app/
-        command: "java -jar ./target/docker-practice-java-0.0.1-SNAPSHOT.jar"
+        command: sh -c "mvn package; java -jar ./target/docker-practice-java-0.0.1-SNAPSHOT.jar"
         ports:
             - "8888:8888"
             - "8080:8080"
